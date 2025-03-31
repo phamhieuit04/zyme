@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\UserController;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DemoController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,35 +23,33 @@ Route::get('/', function () {
 });
 
 // Route::get('/index', [\App\Http\Controllers\IndexController::class, 'index']);
-Route::get('/demo-query', [\App\Http\Controllers\DemoController::class, 'index']);
+Route::get('/demo-query', [DemoController::class, 'index']);
 
 // /url/{params}: truyền params vào url
-Route::get('/list-file/{editorId}', [\App\Http\Controllers\DemoController::class, 'listFile']);
-Route::get('/sort-user-file', [\App\Http\Controllers\DemoController::class, 'sortUserFile']);
+Route::get('/list-file/{editorId}', [DemoController::class, 'listFile']);
+Route::get('/sort-user-file', [DemoController::class, 'sortUserFile']);
 
-Route::get('/eloquent', [\App\Http\Controllers\DemoController::class, 'eloquent']);
+Route::get('/eloquent', [DemoController::class, 'eloquent']);
 
-Route::get('/login', [\App\Http\Controllers\AuthController::class, 'getLogin']);
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'postLogin']);
+Route::get('/login', [AuthController::class, 'getLogin']);
+Route::post('/login', [AuthController::class, 'postLogin']);
 
-Route::group(['middleware' => 'checkLogin'], function()
-{
-    Route::get('/index', [\App\Http\Controllers\IndexController::class, 'index']);
-    Route::get('/dashboard', function()
-    {
+Route::group(['middleware' => 'checkLogin'], function () {
+    Route::get('/index', [IndexController::class, 'index']);
+    Route::get('/dashboard', function () {
         echo "Dashboard";
     });
 
-    Route::group(['prefix' => 'users'], function() {
-        Route::get('/', [\App\Http\Controllers\UserController::class, 'index']);
-        Route::get('/create', [\App\Http\Controllers\UserController::class, 'create']);
-        Route::post('/store', [\App\Http\Controllers\UserController::class, 'store']);
-        Route::get('/show/{id}', [\App\Http\Controllers\UserController::class, 'show']);
-        Route::post('/update/{id}', [\App\Http\Controllers\UserController::class, 'update']);
-        Route::post('/single-upload/{id}', [\App\Http\Controllers\UserController::class, 'singleUpload']);
-        Route::get('/show/confirm/{id}',[\App\Http\Controllers\UserController::class, 'confirm']);
-        Route::get('/multiple-upload/{userId}', [\App\Http\Controllers\UserController::class, 'multipleUpload']);
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/create', [UserController::class, 'create']);
+        Route::post('/store', [UserController::class, 'store']);
+        Route::get('/show/{id}', [UserController::class, 'show']);
+        Route::post('/update/{id}', [UserController::class, 'update']);
+        Route::post('/single-upload/{id}', [UserController::class, 'singleUpload']);
+        Route::get('/show/confirm/{id}', [UserController::class, 'confirm']);
+        Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
     });
 
-    Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout']);
 });
