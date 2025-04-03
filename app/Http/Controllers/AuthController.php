@@ -26,12 +26,12 @@ class AuthController extends Controller
                     return redirect('/home');
                 }
             }
-            else 
+            else
             {
                 return redirect('/login');
             }
         }
-        else 
+        else
         {
             return [
                 'status' => 401,

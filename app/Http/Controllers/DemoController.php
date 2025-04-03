@@ -16,14 +16,16 @@ class DemoController extends Controller
         // Query builder: thao tác trực tiếp tới bảng CSDL bằng lệnh SQL
         $data = DB::table('users')
             ->select(
-                'id', 'email', 'name', 'created_at', 'role'
+                'id',
+                'email',
+                'name',
+                'created_at',
+                'role'
             )
             ->where('role', User::ROLE_ADMIN)
             ->get();
-        if (!empty($data))
-        {
-            foreach ($data as $user)
-            {
+        if (!empty($data)) {
+            foreach ($data as $user) {
                 $user->role = 'Admin';
             }
         }
@@ -34,8 +36,12 @@ class DemoController extends Controller
     {
         $job = DB::table('files')
             ->select(
-                'users.name', 'files.filename', 'files.deadline',
-                'files.status', 'files.priority', 'files.synchronize',
+                'users.name',
+                'files.filename',
+                'files.deadline',
+                'files.status',
+                'files.priority',
+                'files.synchronize',
                 'files.id'
             )
             ->join('users', 'users.id', 'files.user_id')
@@ -43,8 +49,7 @@ class DemoController extends Controller
             ->where('users.role', User::ROLE_EDITOR)
             ->orderByDesc('files.id')
             ->paginate(config('const.paginate'))
-            ->map(function ($item)
-            {
+            ->map(function ($item) {
                 $item->status = File::CONVERT_STATUS_TXT[$item->status];
                 $item->priority = File::CONVERT_PRIORITY_TXT[$item->priority];
                 $item->synchronize = File::CONVERT_SYNCHRONIZE_TXT[$item->synchronize];
@@ -58,9 +63,11 @@ class DemoController extends Controller
         $param = $request->all();
         $users = DB::table('users')
             ->select(
-                'users.id', 'users.name', 'users.email',
+                'users.id',
+                'users.name',
+                'users.email',
                 DB::raw('COUNT(files.id) AS total_file')
-                )
+            )
             ->join('files', 'users.id', 'files.user_id')
             ->where('users.role', User::ROLE_EDITOR)
             ->groupBy('users.id')
@@ -77,28 +84,22 @@ class DemoController extends Controller
         $param = $request->all();
         // Eloquent sẽ render ra lệnh SQL thông qua model
         $users = User::with('files')
-            ->when(function ($query) use ($param)
-            {
-                if (isset($param['editor_name']) && isset($param['file_name']))
-                {
+            ->when(function ($query) use ($param) {
+                if (isset($param['editor_name']) && isset($param['file_name'])) {
                     $query->where('name', 'like', '%' . $param['editor_name'] . '%');
                 }
                 return $query;
             })
-            ->whereHas('files', function ($query) use ($param)
-            {
-                if (isset($param['file_name']) && isset($param['editor_name']))
-                {
+            ->whereHas('files', function ($query) use ($param) {
+                if (isset($param['file_name']) && isset($param['editor_name'])) {
                     $query->where('filename', 'like', '%' . $param['file_name'] . '%');
                 }
                 return $query;
             })
             ->where('role', User::ROLE_EDITOR)
             ->get()
-            ->map(function ($item)
-            {
-                foreach($item->files as $file)
-                {
+            ->map(function ($item) {
+                foreach ($item->files as $file) {
                     $file->status = File::CONVERT_STATUS_TXT[$file->status];
                     $file->priority = File::CONVERT_PRIORITY_TXT[$file->priority];
                     $file->synchronize = File::CONVERT_SYNCHRONIZE_TXT[$file->synchronize];
