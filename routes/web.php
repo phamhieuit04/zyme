@@ -49,6 +49,7 @@ Route::group(['middleware' => 'checkLogin'], function () {
 		Route::post('/single-upload/{id}', [UserController::class, 'singleUpload']);
 		Route::get('/show/confirm/{id}', [UserController::class, 'confirm']);
 		Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
+		Route::post('/multiple-upload/upload', [UserController::class, 'executeUpload']);
 	});
 
 	Route::get('/logout', [AuthController::class, 'logout']);
