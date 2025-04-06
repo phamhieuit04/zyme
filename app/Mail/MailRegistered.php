@@ -11,58 +11,60 @@ use Illuminate\Queue\SerializesModels;
 
 class MailRegistered extends Mailable
 {
-    use Queueable, SerializesModels;
+	use Queueable, SerializesModels;
 
-    private $email;
-    private $password;
+	private $email;
+	private $password;
 
-    public function setEmail ($email) {
-        $this->email = $email;
-    }
+	public function setEmail($email)
+	{
+		$this->email = $email;
+	}
 
-    public function setPassword ($password) {
-        $this->password = $password;
-    }
+	public function setPassword($password)
+	{
+		$this->password = $password;
+	}
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+	/**
+	 * Create a new message instance.
+	 */
+	public function __construct()
+	{
+		//
+	}
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Mail Registered',
-        );
-    }
+	/**
+	 * Get the message envelope.
+	 */
+	public function envelope(): Envelope
+	{
+		return new Envelope(
+			subject: 'Mail Registered',
+		);
+	}
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'mails.registered',
-            with: [
-                'email'=> $this->email,
-                'password'=> $this->password,
-            ]
-        );
-    }
+	/**
+	 * Get the message content definition.
+	 */
+	public function content(): Content
+	{
+		return new Content(
+			view: 'mails.registered',
+			with: [
+				'email' => $this->email,
+				'password' => $this->password,
+			]
+		);
+	}
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
+	/**
+	 * Get the attachments for the message.
+	 *
+	 * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+	 */
+	public function attachments(): array
+	{
+		return [];
+	}
 }

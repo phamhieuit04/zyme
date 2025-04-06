@@ -19,7 +19,7 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return redirect('/login');
 });
 
 // Route::get('/index', [\App\Http\Controllers\IndexController::class, 'index']);
@@ -35,21 +35,21 @@ Route::get('/login', [AuthController::class, 'getLogin']);
 Route::post('/login', [AuthController::class, 'postLogin']);
 
 Route::group(['middleware' => 'checkLogin'], function () {
-    Route::get('/index', [IndexController::class, 'index']);
-    Route::get('/dashboard', function () {
-        echo "Dashboard";
-    });
+	Route::get('/index', [IndexController::class, 'index']);
+	Route::get('/dashboard', function () {
+		echo "Dashboard";
+	});
 
-    Route::group(['prefix' => 'users'], function () {
-        Route::get('/', [UserController::class, 'index']);
-        Route::get('/create', [UserController::class, 'create']);
-        Route::post('/store', [UserController::class, 'store']);
-        Route::get('/show/{id}', [UserController::class, 'show']);
-        Route::post('/update/{id}', [UserController::class, 'update']);
-        Route::post('/single-upload/{id}', [UserController::class, 'singleUpload']);
-        Route::get('/show/confirm/{id}', [UserController::class, 'confirm']);
-        Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
-    });
+	Route::group(['prefix' => 'users'], function () {
+		Route::get('/', [UserController::class, 'index']);
+		Route::get('/create', [UserController::class, 'create']);
+		Route::post('/store', [UserController::class, 'store']);
+		Route::get('/show/{id}', [UserController::class, 'show']);
+		Route::post('/update/{id}', [UserController::class, 'update']);
+		Route::post('/single-upload/{id}', [UserController::class, 'singleUpload']);
+		Route::get('/show/confirm/{id}', [UserController::class, 'confirm']);
+		Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
+	});
 
-    Route::get('/logout', [AuthController::class, 'logout']);
+	Route::get('/logout', [AuthController::class, 'logout']);
 });
