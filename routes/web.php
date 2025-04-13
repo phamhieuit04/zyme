@@ -50,6 +50,7 @@ Route::group(['middleware' => 'checkLogin'], function () {
 		Route::get('/show/confirm/{id}', [UserController::class, 'confirm']);
 		Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
 		Route::post('/multiple-upload/upload', [UserController::class, 'executeUpload']);
+		Route::get('/synchronize/{id}', [UserController::class, 'synchronize']);
 	});
 
 	Route::get('/logout', [AuthController::class, 'logout']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\MailRegistered;
 use App\Models\File;
 use App\Models\User;
+use App\Services\GoogleDriveService;
 use App\Validations\UserValidate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -250,5 +251,45 @@ class UserController extends Controller
 			'status' => 'success',
 			'message' => 'Upload success'
 		];
+	}
+
+	public function synchronize(Request $request, $id)
+	{
+		$file = File::find($id);
+		if (is_null($file)) {
+			return [
+				'code' => 200,
+				'status' => 'Success',
+				'message' => 'File not exit'
+			];
+		}
+		$lastDot = strrpos($file->filename, '.');
+		$name = substr($file->filename, 0, $lastDot);
+		$extension = substr($file->filename, $lastDot + 1);
+		$fileName = $name . "_done." . $extension;
+		$user = User::find($file->user_id);
+		$userName = explode('@', $user->email);
+		$filePath = public_path(
+			'uploads/' . $userName[0] . '/' . $fileName
+		);
+		if (!file_exists($filePath)) {
+			return [
+				'code' => 204,
+				'status' => 'Success',
+				'message' => 'Synchronize failed'
+			];
+		}
+		$googleDriveService = new GoogleDriveService();
+		$sync = $googleDriveService->synchronize($filePath, $fileName);
+		if ($sync == false) {
+			return [
+				'code' => 500,
+				'status' => 'Error',
+				'message' => 'Internal server error'
+			];
+		}
+		$file->synchronize = File::SYNC;
+		$file->update();
+		return redirect()->back();
 	}
 }

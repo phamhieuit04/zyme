@@ -77,20 +77,6 @@
 						</tr>
 					@endforeach
 				</tbody>
-				@foreach ($files as $file)
-					<tr>
-						<td>{{ $file->id }}</td>
-						<td>{{ $file->filename }}</td>
-						<td>{{ $file->deadline }}</td>
-						<td>{{ $file->txt_priority }}</td>
-						<td>{{ $file->txt_synchronize }}</td>
-						<td>
-							<button class="btn btn-secondary">承認する</button>
-							<button class="btn btn-success">ドンボ</button>
-						</td>
-					</tr>
-				@endforeach
-				</tbody>
 			</table>
 			{!! $files->links() !!}
 		</div>
