@@ -7,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Salary extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    const STATUS_PAID = 1;
-    const STATUS_UN_PAID = 0;
+	const STATUS_PAID = 1;
+	const STATUS_UN_PAID = 0;
+	const BASE_SALARY = 50000;
 
-    protected $table = 'salary';
+	protected $table = 'salary';
 
-    protected $fillable = [
-        'user_id',
-        'status', // 1: paid, 0: unpaid
-        'salary',
-        'month',
-        'created_at',
-        'updated_at'
-    ];
+	protected $fillable = [
+		'user_id',
+		'status', // 1: paid, 0: unpaid
+		'salary',
+		'month',
+		'created_at',
+		'updated_at'
+	];
 }

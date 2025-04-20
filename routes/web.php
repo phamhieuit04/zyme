@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,10 @@ Route::group(['middleware' => 'checkLogin'], function () {
 		Route::get('/multiple-upload/{userId}', [UserController::class, 'multipleUpload']);
 		Route::post('/multiple-upload/upload', [UserController::class, 'executeUpload']);
 		Route::get('/synchronize/{id}', [UserController::class, 'synchronize']);
+	});
+
+	Route::group(['prefix' => 'statistic'], function () {
+		Route::get('/', [StatisticController::class, 'index']);
 	});
 
 	Route::get('/logout', [AuthController::class, 'logout']);
