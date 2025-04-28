@@ -56,6 +56,7 @@ Route::group(['middleware' => 'checkLogin'], function () {
 
 	Route::group(['prefix' => 'statistic'], function () {
 		Route::get('/', [StatisticController::class, 'index']);
+		Route::get('/paid-salary/{id}', [StatisticController::class, 'paidSalary']);
 	});
 
 	Route::get('/logout', [AuthController::class, 'logout']);
