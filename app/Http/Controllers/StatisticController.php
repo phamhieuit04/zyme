@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SalaryExport;
 use App\Models\File;
 use App\Models\Salary;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StatisticController extends Controller
 {
@@ -46,5 +48,11 @@ class StatisticController extends Controller
 		$salary->status = Salary::STATUS_PAID;
 		$salary->save();
 		return redirect()->back();
+	}
+
+	public function export()
+	{
+		$timeNow = Carbon::now();
+		return Excel::download(new SalaryExport($timeNow), 'export.xlsx');
 	}
 }
