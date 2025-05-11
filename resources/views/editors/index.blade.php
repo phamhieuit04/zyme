@@ -57,7 +57,8 @@
 				</thead>
 				<tbody>
 					@foreach ($files as $file)
-						<form action="{{ url('/editors/edit/' . $file->id) }}" method="POST">
+						<form action="{{ url('/editors/edit/' . $file->id) }}" method="POST"
+							id="upload_form_{{ $file->id }}" enctype="multipart/form-data">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<tr>
 								<td>{{ $file->id }}</td>
@@ -75,9 +76,11 @@
 									@else
 										<button class="btn btn-primary">Edit</button>
 									@endif
-									<a href="#" class="btn btn-primary">Download</a>
-									<label class="btn btn-primary" for="choose_file_1">Upload</label>
-									<input type="file" name="file" style="display: none" id="choose_file_1">
+									<a href="{{ url('/editors/download/' . $file->id) }}" class="btn btn-primary"
+										target="_blank">Download</a>
+									<label class="btn btn-primary" for="choose_file_{{ $file->id }}">Upload</label>
+									<input type="file" name="file" style="display: none" id="choose_file_{{ $file->id }}"
+										onchange="upload({{ $file->id }})">
 								</td>
 							</tr>
 						</form>
@@ -103,6 +106,11 @@
 	<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
 	<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.1.0') }}"></script>
+	<script>
+		function upload(fileId) {
+			// TODO: upload file
+		}
+	</script>
 </body>
 
 </html>

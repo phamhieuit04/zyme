@@ -30,9 +30,30 @@ class EditorController extends Controller
 
 	public function update(Request $request, string $id)
 	{
+		// TODO: upload file
 		$file = File::find($id);
 		$file->status = File::STATUS_CONFIRM;
 		$file->save();
 		return redirect()->back();
+	}
+
+	public function download(Request $request, string $id)
+	{
+		$folder = explode('@', Auth::user()->email)[0];
+		$file = File::find($id);
+		if (!$file) {
+			return [
+				'code' => '404',
+				'message' => 'File not found'
+			];
+		}
+		$path = public_path('uploads/' . $folder . '/' . $file->filename);
+		if (!file_exists($path)) {
+			return [
+				'code' => '404',
+				'message' => 'File not found'
+			];
+		}
+		return response()->download($path);
 	}
 }
