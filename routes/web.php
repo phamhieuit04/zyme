@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EditorController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
@@ -58,6 +59,11 @@ Route::group(['middleware' => 'checkLogin'], function () {
 		Route::get('/', [StatisticController::class, 'index']);
 		Route::get('/paid-salary/{id}', [StatisticController::class, 'paidSalary']);
 		Route::get('/export', [StatisticController::class, 'export']);
+	});
+
+	Route::group(['prefix' => 'editors'], function () {
+		Route::get('/', [EditorController::class, 'index']);
+		Route::post('/edit/{id}', [EditorController::class, 'update']);
 	});
 
 	Route::get('/logout', [AuthController::class, 'logout']);
