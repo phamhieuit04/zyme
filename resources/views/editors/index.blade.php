@@ -108,7 +108,14 @@
 	<script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.1.0') }}"></script>
 	<script>
 		function upload(fileId) {
-			// TODO: upload file
+			let input = document.getElementById('choose_file_' + fileId);
+			let file = input.files[0];
+			if (file.type != 'image/jpeg' && file.type != 'image/png' && file.type != 'image/vnd.adobe.photoshop') {
+				alert("Only JPG, PNG, and PSD files are allowed!");
+				input.value = '';
+				return;
+			}
+			$('#upload_form_' + fileId).submit();
 		}
 	</script>
 </body>

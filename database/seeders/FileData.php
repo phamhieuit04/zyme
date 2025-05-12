@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FileData extends Seeder
@@ -16,14 +16,17 @@ class FileData extends Seeder
 	{
 		// Tao 10000 ban ghi bang file
 		$fileArray = [];
-		for ($i = 10130; $i < 10150; $i++) {
+		$timeNow = Carbon::now();
+		for ($i = 10221; $i < 10251; $i++) {
 			array_push($fileArray, [
-				'filename' => 'fileame-' . $i,
-				'deadline' => Carbon::now(), // Lay thoi gian hien tai
+				'filename' => 'fileame-' . $i . '.jpeg',
+				'deadline' => $timeNow, // Lay thoi gian hien tai
 				'status' => 1,
 				'priority' => 1,
 				'user_id' => 109,
-				'synchronize' => 0
+				'synchronize' => 0,
+				'created_at' => $timeNow,
+				'updated_at' => $timeNow
 			]);
 		}
 		// Debug trong Laravel,

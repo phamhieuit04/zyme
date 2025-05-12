@@ -30,10 +30,29 @@ class EditorController extends Controller
 
 	public function update(Request $request, string $id)
 	{
-		// TODO: upload file
+		$param = $request->all();
 		$file = File::find($id);
-		$file->status = File::STATUS_CONFIRM;
+		if (isset($param['file']) && !is_null($param['file'])) {
+			$fileName = $file->filename;
+			$lastDot = strrpos($file->filename, '.');
+			if ($lastDot !== false) {
+				$name = substr($file->filename, 0, $lastDot);
+				$extension = substr($file->filename, $lastDot + 1);
+			} else {
+				$name = $file->filename;
+				$extension = '';
+			}
+			$fileName = $name . '_done' . ($extension ? '.' . $extension : '');
+			$directory = explode('@', Auth::user()->email)[0];
+			$path = public_path('uploads/' . $directory . '/' . $fileName);
+			$fileUpload = $request->file('file');
+			move_uploaded_file($fileUpload, $path);
+
+			return redirect()->back();
+		}
+		$file->status = File::CONVERT_PRIORITY_TXT();
 		$file->save();
+
 		return redirect()->back();
 	}
 
