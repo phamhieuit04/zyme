@@ -33,11 +33,11 @@ class SampleData extends Seeder
 				'role' => 0
 			]);
 		}
-		// DB::table('users')->insert([
-		//     'name' => 'admin',
-		//     'email' => 'admin@gmail.com',
-		//     'password' => Hash::make('12345678'),
-		//     'role' => 1
-		// ]);
+		DB::table('users')->insert([
+			'name' => 'admin',
+			'email' => 'admin@gmail.com',
+			'password' => Hash::make('12345678'),
+			'role' => 1
+		]);
 	}
 }
